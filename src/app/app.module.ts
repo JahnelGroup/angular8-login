@@ -1,10 +1,11 @@
+import {HttpClientModule} from '@angular/common/http';
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
+import {HomeComponentComponent} from './home-component/home-component.component';
 
 import { RegistrationComponentComponent } from './registration-component/registration-component.component';
 import { LoginComponentComponent } from './login-component/login-component.component';
 import { WelcomeComponentComponent } from './welcome-component/welcome-component.component';
-import { DashboardComponentComponent } from './dashboard-component/dashboard-component.component';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -17,7 +18,8 @@ import { RouterModule, Routes } from '@angular/router';
     AppComponent,
     RegistrationComponentComponent,
     LoginComponentComponent,
-    WelcomeComponentComponent
+    WelcomeComponentComponent,
+    HomeComponentComponent
   ],
   imports: [
     BrowserModule,
@@ -27,8 +29,10 @@ import { RouterModule, Routes } from '@angular/router';
     RouterModule.forRoot([
       { path: '', component: WelcomeComponentComponent, pathMatch: 'full' },
       { path: 'register', component: RegistrationComponentComponent },
-      { path: 'login', component: LoginComponentComponent }
+      { path: 'login', component: LoginComponentComponent },
+      { path: 'home', component: HomeComponentComponent}
     ]),
+    HttpClientModule,
   ],
   providers: [],
   bootstrap: [AppComponent]
