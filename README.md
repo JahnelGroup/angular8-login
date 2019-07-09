@@ -1,5 +1,10 @@
 # Angular8Login
 
+## References
+
+* https://code.tutsplus.com/tutorials/how-to-build-a-login-and-registration-ui-with-angular-and-material-design--cms-31794
+* https://jasonwatmore.com/post/2019/06/26/angular-8-basic-http-authentication-tutorial-example
+
 ## TODO
 
 * Add basic auth: https://jasonwatmore.com/post/2019/06/26/angular-8-basic-http-authentication-tutorial-example#login-component-ts
