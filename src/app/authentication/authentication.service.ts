@@ -29,7 +29,9 @@ export class AuthenticationService {
   }
 
   register(registerUser: RegisterDetails): void {
-    this.http.post<UserDetails>(this.ROOT_URL + 'registerUser', registerUser);
+    this.http.post<UserDetails>(this.ROOT_URL + 'registerUser', registerUser).subscribe(response => {
+      this.router.navigate(['login']);
+    });
   }
 
   login(credentials: Credentials): Promise<UserDetails> {
