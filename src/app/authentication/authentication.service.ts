@@ -1,7 +1,7 @@
 import {HttpClient, HttpHeaders} from '@angular/common/http';
-import {Injectable} from '@angular/core';
+import {Injectable, Output, EventEmitter} from '@angular/core';
 import {Router} from '@angular/router';
-import {Observable, Subscription} from 'rxjs';
+import {Observable, Subscription, BehaviorSubject} from 'rxjs';
 import {Credentials, RegisterDetails, TokenDetails, UserDetails} from './model/credentials';
 
 @Injectable({
@@ -13,6 +13,7 @@ export class AuthenticationService {
   private readonly ROOT_URL = 'http://localhost:5000/api/';
   private user: UserDetails;
   private tokenDetails: TokenDetails;
+  private loggedIn: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
 
   constructor(private router: Router, private http: HttpClient) { }
 
@@ -21,11 +22,21 @@ export class AuthenticationService {
     this.tokenDetails = tokenDetails;
   }
 
+  private removeToken() {
+    localStorage.removeItem(this.LOCAL_STORAGE_TOKEN_KEY);
+    this.tokenDetails = undefined;
+  }
+
   private getToken(): TokenDetails | string {
     if (!this.tokenDetails) {
       return localStorage.getItem(this.LOCAL_STORAGE_TOKEN_KEY);
     }
     return this.tokenDetails;
+  }
+
+  isLoggedIn():BehaviorSubject<boolean> {
+    this.loggedIn.next(this.getToken() !== null);
+    return this.loggedIn;
   }
 
   register(registerUser: RegisterDetails): void {
@@ -40,8 +51,16 @@ export class AuthenticationService {
     });
     return this.http.get<TokenDetails>(this.ROOT_URL + 'auth/token', { headers }).toPromise().then(tokenDetails => {
       this.saveToken(tokenDetails);
+      this.loggedIn.next(true);
       return this.loggedInUser(tokenDetails);
     });
+  }
+
+  logout(){
+    this.removeToken();
+    this.user = undefined;
+    this.loggedIn.next(false);
+    this.router.navigate(['']);
   }
 
   loggedInUser(token: TokenDetails | string): Promise<UserDetails> {

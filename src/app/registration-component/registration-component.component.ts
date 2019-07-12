@@ -16,12 +16,16 @@ export class RegistrationComponentComponent implements OnInit {
   username: string;
   password: string;
   email: string;
+  type: string = 'user';
+  //Type is hard coded as user - otherwise registration doesn't work
+
 
   ngOnInit() {
   }
 
   register(): void {
-    this.authService.register(new RegisterDetails(this.email, this.username, this.password));
+    this.authService.register(new RegisterDetails(this.email, this.username, this.password, this.type));
+    //Type is hard coded as user - otherwise registration doesn't work
   }
 
 }

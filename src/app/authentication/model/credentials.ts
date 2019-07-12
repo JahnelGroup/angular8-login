@@ -10,7 +10,8 @@ export interface TokenDetails {
 }
 
 export class RegisterDetails implements UserDetails {
-  constructor(public email: string, public username: string, private password: string) {}
+  constructor(public email: string, public username: string, private password: string, public type: string) {}
+  //Type is hard coded as user - otherwise registration doesn't work
 }
 
 export class Credentials {

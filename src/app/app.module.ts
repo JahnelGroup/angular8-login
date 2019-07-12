@@ -12,6 +12,7 @@ import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MyMaterialModule } from './material.module';
 import { RouterModule, Routes } from '@angular/router';
+import { NavbarComponentComponent } from './navbar-component/navbar-component.component';
 
 @NgModule({
   declarations: [
@@ -19,7 +20,8 @@ import { RouterModule, Routes } from '@angular/router';
     RegistrationComponentComponent,
     LoginComponentComponent,
     WelcomeComponentComponent,
-    HomeComponentComponent
+    HomeComponentComponent,
+    NavbarComponentComponent
   ],
   imports: [
     BrowserModule,
