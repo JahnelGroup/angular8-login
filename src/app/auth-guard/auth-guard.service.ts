@@ -9,8 +9,8 @@ export class AuthGuardService implements CanActivate {
 
   constructor(private authenticationService: AuthenticationService, private router: Router) { }
 
-  canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
-    const user = this.authenticationService.getUser();
+  async canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
+    const user = await this.authenticationService.getUser();
     if(user){
       return true;
     } else {

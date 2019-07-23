@@ -1,0 +1,21 @@
+<mat-toolbar>
+  <span>Posts</span>
+</mat-toolbar>
+<mat-card class="my-card">
+  <mat-card-content>
+    <form class="my-form">
+      <mat-form-field class="full-width">
+        <mat-label>Post</mat-label>
+        <input  matInput  placeholder="Post" [(ngModel)]="postText" name="post">
+      </mat-form-field>
+    </form>
+  </mat-card-content>
+  <mat-card-actions>
+    <button mat-raised-button (click)="post()" color="primary">Post</button>
+  </mat-card-actions>
+</mat-card>
+<ul>
+  <li *ngFor="let post of posts">
+    {{ post.post }} - {{ post.username }}
+  </li>
+</ul>

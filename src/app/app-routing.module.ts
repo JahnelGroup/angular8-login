@@ -5,6 +5,8 @@ import { HomeComponentComponent } from './home-component/home-component.componen
 import { RegistrationComponentComponent } from './registration-component/registration-component.component';
 import { LoginComponentComponent } from './login-component/login-component.component';
 import { WelcomeComponentComponent } from './welcome-component/welcome-component.component';
+import { PostsComponentComponent } from './posts-component/posts-component.component';
+
 import { AuthGuardService } from './auth-guard/auth-guard.service';
 
 const routes: Routes = [
@@ -12,6 +14,7 @@ const routes: Routes = [
   { path: 'login', component: LoginComponentComponent },
   { path: 'register', component: RegistrationComponentComponent },
   { path: 'home', component:HomeComponentComponent, canActivate: [AuthGuardService] },
+  { path: 'posts', component:PostsComponentComponent, canActivate: [AuthGuardService] },
 
   { path: '**', redirectTo: ''}
 ];
@@ -20,4 +23,5 @@ const routes: Routes = [
   imports: [RouterModule.forRoot(routes)],
   exports: [RouterModule]
 })
+
 export class AppRoutingModule { }

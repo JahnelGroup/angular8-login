@@ -11,9 +11,10 @@ export class AuthenticationService {
 
   private readonly LOCAL_STORAGE_TOKEN_KEY = 'accessToken';
   private readonly ROOT_URL = 'http://localhost:5000/api/';
-  private user: UserDetails;
+  // private user: UserDetails;
+  private userSubject: BehaviorSubject<UserDetails> = new BehaviorSubject<UserDetails>(null);
   private tokenDetails: TokenDetails;
-  private loggedIn: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
+  //private loggedIn: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
 
   constructor(private router: Router, private http: HttpClient) { }
 
@@ -34,10 +35,12 @@ export class AuthenticationService {
     return this.tokenDetails;
   }
 
+  /*
   isLoggedIn():BehaviorSubject<boolean> {
-    this.loggedIn.next(this.getToken() !== null);
+    this.loggedIn.next(this.getUser() !== null);
     return this.loggedIn;
   }
+  */
 
   register(registerUser: RegisterDetails): void {
     this.http.post<UserDetails>(this.ROOT_URL + 'registerUser', registerUser).subscribe(response => {
@@ -51,15 +54,16 @@ export class AuthenticationService {
     });
     return this.http.get<TokenDetails>(this.ROOT_URL + 'auth/token', { headers }).toPromise().then(tokenDetails => {
       this.saveToken(tokenDetails);
-      this.loggedIn.next(true);
+      //this.loggedIn.next(true);
       return this.loggedInUser(tokenDetails);
     });
   }
 
-  logout(){
+  logout(): void{
     this.removeToken();
-    this.user = undefined;
-    this.loggedIn.next(false);
+    //this.user = undefined;
+    this.userSubject.next(null);
+    //this.loggedIn.next(false);
     this.router.navigate(['']);
   }
 
@@ -67,17 +71,29 @@ export class AuthenticationService {
     const headers = typeof token === 'string' ? new HttpHeaders( {Authorization: 'Basic ' + btoa(token + ':')}) :
       new HttpHeaders({Authorization: 'Basic ' + btoa(token.token + ':')});
     return this.http.get<UserDetails>(this.ROOT_URL + 'users/me', { headers }).toPromise().then(userDetails => {
-      this.user = userDetails;
-      return this.user;
+      //this.user = userDetails;
+      this.userSubject.next(userDetails);
+      return userDetails;
+    }).catch(err => {
+      this.removeToken();
+      //this.loggedIn.next(false);
+      this.userSubject.next(null);
+      return null;
     });
   }
 
+  // Replaces isLoggedIn
+  getUserSubject(): BehaviorSubject<UserDetails> {
+    return this.userSubject;
+  }
+
   getUser(): UserDetails | Promise<UserDetails> {
-    const token = this.getToken();
-    if (this.user) {
-      return this.user;
+    const token = this.getToken();  // Still a problem if you don't reload the page
+    const user = this.userSubject.getValue();
+    if (user) {
+      return user;
     } else if (token) {
-      return this.loggedInUser(token);
+      return this.loggedInUser(token);  // Updates userSubject in function
     } else {
       return null;
     }
