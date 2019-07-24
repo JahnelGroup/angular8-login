@@ -1,8 +1,8 @@
-import {HttpClientModule} from '@angular/common/http';
+import {HttpClientModule, HTTP_INTERCEPTORS} from '@angular/common/http';
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
-import {HomeComponentComponent} from './home-component/home-component.component';
 
+import {HomeComponentComponent} from './home-component/home-component.component';
 import { RegistrationComponentComponent } from './registration-component/registration-component.component';
 import { LoginComponentComponent } from './login-component/login-component.component';
 import { WelcomeComponentComponent } from './welcome-component/welcome-component.component';
@@ -14,6 +14,8 @@ import { MyMaterialModule } from './material.module';
 import { RouterModule, Routes } from '@angular/router';
 import { NavbarComponentComponent } from './navbar-component/navbar-component.component';
 import { PostsComponentComponent } from './posts-component/posts-component.component';
+
+import {BasicAuthInterceptor} from './basic-auth/basic-auth.interceptor';
 
 @NgModule({
   declarations: [
@@ -38,7 +40,9 @@ import { PostsComponentComponent } from './posts-component/posts-component.compo
     ]),
     HttpClientModule,
   ],
-  providers: [],
+  providers: [
+    { provide: HTTP_INTERCEPTORS, useClass: BasicAuthInterceptor, multi: true}
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

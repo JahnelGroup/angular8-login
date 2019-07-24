@@ -3,6 +3,7 @@ import {Injectable, Output, EventEmitter} from '@angular/core';
 import {Router} from '@angular/router';
 import {Observable, Subscription, BehaviorSubject} from 'rxjs';
 import {Credentials, RegisterDetails, TokenDetails, UserDetails} from './model/credentials';
+import { Post } from '../posts/models/post';
 
 @Injectable({
   providedIn: 'root'
@@ -11,10 +12,8 @@ export class AuthenticationService {
 
   private readonly LOCAL_STORAGE_TOKEN_KEY = 'accessToken';
   private readonly ROOT_URL = 'http://localhost:5000/api/';
-  // private user: UserDetails;
   private userSubject: BehaviorSubject<UserDetails> = new BehaviorSubject<UserDetails>(null);
   private tokenDetails: TokenDetails;
-  //private loggedIn: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
 
   constructor(private router: Router, private http: HttpClient) { }
 
@@ -28,19 +27,21 @@ export class AuthenticationService {
     this.tokenDetails = undefined;
   }
 
-  private getToken(): TokenDetails | string {
+  getToken(): TokenDetails | string {
     if (!this.tokenDetails) {
       return localStorage.getItem(this.LOCAL_STORAGE_TOKEN_KEY);
     }
     return this.tokenDetails;
   }
 
-  /*
-  isLoggedIn():BehaviorSubject<boolean> {
-    this.loggedIn.next(this.getUser() !== null);
-    return this.loggedIn;
+  getBasicAuth(): string {
+    const token = this.getToken();
+    if(token){
+      return typeof token === 'string' ? btoa(token + ':') : btoa(token.token + ':');
+    } else {
+      return null;
+    }
   }
-  */
 
   register(registerUser: RegisterDetails): void {
     this.http.post<UserDetails>(this.ROOT_URL + 'registerUser', registerUser).subscribe(response => {
@@ -49,54 +50,51 @@ export class AuthenticationService {
   }
 
   login(credentials: Credentials): Promise<UserDetails> {
+    // Creates its own header to supply basic auth with username/password instead of token
     const headers = new HttpHeaders({
       Authorization: credentials.basicAuth
     });
     return this.http.get<TokenDetails>(this.ROOT_URL + 'auth/token', { headers }).toPromise().then(tokenDetails => {
       this.saveToken(tokenDetails);
-      //this.loggedIn.next(true);
       return this.loggedInUser(tokenDetails);
     });
   }
 
-  logout(): void{
+  logout(): void {
     this.removeToken();
-    //this.user = undefined;
     this.userSubject.next(null);
-    //this.loggedIn.next(false);
     this.router.navigate(['']);
   }
 
   loggedInUser(token: TokenDetails | string): Promise<UserDetails> {
-    const headers = typeof token === 'string' ? new HttpHeaders( {Authorization: 'Basic ' + btoa(token + ':')}) :
-      new HttpHeaders({Authorization: 'Basic ' + btoa(token.token + ':')});
-    return this.http.get<UserDetails>(this.ROOT_URL + 'users/me', { headers }).toPromise().then(userDetails => {
-      //this.user = userDetails;
+    /*
+    const basicAuthStr = typeof token === 'string' ? 'Basic ' + btoa(token + ':') :
+      'Basic ' + btoa(token.token + ':');
+    const headers = new HttpHeaders({Authorization: basicAuthStr});
+    */
+    return this.http.get<UserDetails>(this.ROOT_URL + 'users/me'/*, { headers }*/).toPromise().then(userDetails => {
       this.userSubject.next(userDetails);
       return userDetails;
     }).catch(err => {
       this.removeToken();
-      //this.loggedIn.next(false);
       this.userSubject.next(null);
       return null;
     });
   }
 
-  // Replaces isLoggedIn
   getUserSubject(): BehaviorSubject<UserDetails> {
     return this.userSubject;
   }
 
   getUser(): UserDetails | Promise<UserDetails> {
-    const token = this.getToken();  // Still a problem if you don't reload the page
+    const token = this.getToken();
     const user = this.userSubject.getValue();
     if (user) {
       return user;
     } else if (token) {
-      return this.loggedInUser(token);  // Updates userSubject in function
+      return this.loggedInUser(token);
     } else {
       return null;
     }
   }
-
 }

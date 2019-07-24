@@ -15,7 +15,7 @@ export class PostsComponentComponent implements OnInit {
 
   private user: UserDetails
 
-  private posts: Post[];
+  private posts;
 
   constructor(private authService: AuthenticationService,
     private postsService: PostsService) { }
@@ -30,13 +30,17 @@ export class PostsComponentComponent implements OnInit {
       });
     }
 
-    this.posts = this.postsService.getPosts();
+    this.postsService.getPosts().then(posts => {
+      this.posts = posts;
+    });
+
   }
 
   post(){
     if(this.postText){
+      this.postsService.post(this.postText);
+      this.posts.push({message: this.postText}) // Adds post immediately to posts page
       this.postText = "";
     }
   }
-
 }
