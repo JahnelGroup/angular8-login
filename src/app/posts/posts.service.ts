@@ -15,23 +15,26 @@ export class PostsService {
   constructor(private http: HttpClient, private authService: AuthenticationService) { }
 
   async getPosts(){
-    if(this.posts.length == 0){
-      this.posts.push({ post: 'Post 1', username: 'username1'});
-      this.posts.push({ post: 'Post 2', username: 'username2'});
-      this.posts.push({ post: 'Post 3', username: 'username3'});
-    }
-
     const user: UserDetails = await this.authService.getUser();
     const username = user.username;
 
-    return this.http.get<Post>(this.ROOT_URL + 'users/' + username + '/posts').toPromise().then(posts => {
-      return posts;
+    return this.http.get<Post[]>(this.ROOT_URL + 'users/' + username + '/posts/all').toPromise().then(posts => {
+      return posts.reverse();
     });
   }
 
   post(postText:String){
     this.http.post<Post>(this.ROOT_URL + 'users/me/posts', { message: postText }).toPromise().then(post => {
-      console.log("Posted");
+    });
+  }
+
+  async deletePostById(postId){
+    const user: UserDetails = await this.authService.getUser();
+    const username = user.username;
+    this.http.delete(this.ROOT_URL + 'users/' + username + '/posts/' + postId).toPromise().then(res => {
+      console.log("Successful Delete");
+    }).catch( err => {
+      console.log("Error");
     });
   }
 }

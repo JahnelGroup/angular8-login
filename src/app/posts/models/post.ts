@@ -1,4 +1,6 @@
 export interface Post{
-    post: String
-    username: String
+    created: String
+    id: number
+    message: String
+    updated: String
 }

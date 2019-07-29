@@ -13,6 +13,9 @@
         <input  matInput  placeholder="Password" [(ngModel)]="password" name="password">
       </mat-form-field>
     </form>
+    <div *ngIf="failedLogin" class="errorMessage">
+      {{ failedLoginMessage }}
+    </div>
   </mat-card-content>
   <mat-card-actions>
     <button mat-raised-button (click)="login()" color="primary">Login</button>

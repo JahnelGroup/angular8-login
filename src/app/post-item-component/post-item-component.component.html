@@ -1,0 +1,11 @@
+<mat-card class="my-card" *ngIf="!hidden">
+    <mat-card-content>
+        <div>
+            {{ post.message }}
+        </div>
+        <div>
+            Posted {{ postDate }}
+        </div>
+    </mat-card-content>
+    <button (click)="delete()">Delete</button>
+</mat-card>

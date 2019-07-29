@@ -14,8 +14,5 @@
     <button mat-raised-button (click)="post()" color="primary">Post</button>
   </mat-card-actions>
 </mat-card>
-<ul>
-  <li *ngFor="let post of posts">
-    {{ post?.message }}
-  </li>
-</ul>
+<app-post-item-component *ngFor="let post of posts" [post]="post" (deletedPost)="deletePost($event)">
+</app-post-item-component>

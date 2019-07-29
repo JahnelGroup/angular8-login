@@ -39,8 +39,13 @@ export class PostsComponentComponent implements OnInit {
   post(){
     if(this.postText){
       this.postsService.post(this.postText);
-      this.posts.push({message: this.postText}) // Adds post immediately to posts page
+      this.posts.unshift({created: "Just Now", message: this.postText}) // Adds post immediately to posts page
       this.postText = "";
     }
+  }
+
+  deletePost(post:Post){
+    this.postsService.deletePostById(post.id);
+    this.posts = this.posts.filter( p => p.id != post.id);
   }
 }

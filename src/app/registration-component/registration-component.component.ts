@@ -15,8 +15,10 @@ export class RegistrationComponentComponent implements OnInit {
 
   username: string;
   password: string;
+  password2: string;
   email: string;
   type: string = 'user';
+  error = {};
   //Type is hard coded as user - otherwise registration doesn't work
 
 
@@ -24,7 +26,9 @@ export class RegistrationComponentComponent implements OnInit {
   }
 
   register(): void {
-    this.authService.register(new RegisterDetails(this.email, this.username, this.password, this.type));
+    this.authService.register(new RegisterDetails(this.email, this.username, this.password, this.password2, this.type)).catch(err => {
+      this.error = err.error;
+    });
     //Type is hard coded as user - otherwise registration doesn't work
   }
 

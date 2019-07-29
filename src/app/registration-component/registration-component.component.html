@@ -8,14 +8,30 @@
         <mat-label>Email</mat-label>
         <input  matInput  placeholder="Email" [(ngModel)]="email" name="email" required>
       </mat-form-field>
+      <div *ngIf="error.email" class="errorMessage">
+        {{ error.email }}
+      </div>
       <mat-form-field class="full-width">
         <mat-label>Username</mat-label>
         <input  matInput  placeholder="Username" [(ngModel)]="username" name="username"  required>
       </mat-form-field>
+      <div *ngIf="error.username" class="errorMessage">
+        {{ error.username }}
+      </div>
       <mat-form-field class="full-width">
         <mat-label>Password</mat-label>
-        <input  matInput  placeholder="Password" [(ngModel)]="password" name="password">
+        <input  matInput  placeholder="Password" [(ngModel)]="password" name="password" required>
       </mat-form-field>
+      <div *ngIf="error.password" class="errorMessage">
+        {{ error.password }}
+      </div>
+      <mat-form-field class="full-width">
+        <mat-label>Repeat Password</mat-label>
+        <input  matInput  placeholder="Repeat Password" [(ngModel)]="password2" name="password2" required>
+      </mat-form-field>
+      <div *ngIf="error.password2" class="errorMessage">
+        {{ error.password2 }}
+      </div>
     </form>
   </mat-card-content>
   <mat-card-actions>

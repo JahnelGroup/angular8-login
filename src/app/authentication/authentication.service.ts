@@ -43,8 +43,8 @@ export class AuthenticationService {
     }
   }
 
-  register(registerUser: RegisterDetails): void {
-    this.http.post<UserDetails>(this.ROOT_URL + 'registerUser', registerUser).subscribe(response => {
+  register(registerUser: RegisterDetails): Promise<any> {
+    return this.http.post<UserDetails>(this.ROOT_URL + 'registerUser', registerUser).toPromise().then(response => {
       this.router.navigate(['login']);
     });
   }
@@ -58,6 +58,11 @@ export class AuthenticationService {
       this.saveToken(tokenDetails);
       return this.loggedInUser(tokenDetails);
     });
+  }
+
+  removedExpiredSession(): void {
+    this.removeToken();
+    this.userSubject.next(null);
   }
 
   logout(): void {
