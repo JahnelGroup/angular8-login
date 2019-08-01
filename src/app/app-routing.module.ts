@@ -6,6 +6,8 @@ import { RegistrationComponentComponent } from './registration-component/registr
 import { LoginComponentComponent } from './login-component/login-component.component';
 import { WelcomeComponentComponent } from './welcome-component/welcome-component.component';
 import { PostsComponentComponent } from './posts-component/posts-component.component';
+import { UserViewComponent } from './user-view/user-view.component';
+
 
 import { AuthGuardService } from './auth-guard/auth-guard.service';
 
@@ -15,6 +17,7 @@ const routes: Routes = [
   { path: 'register', component: RegistrationComponentComponent },
   { path: 'home', component:HomeComponentComponent, canActivate: [AuthGuardService] },
   { path: 'posts', component:PostsComponentComponent, canActivate: [AuthGuardService] },
+  { path: 'viewUser', component:UserViewComponent, canActivate: [AuthGuardService] },
 
   { path: '**', redirectTo: ''}
 ];

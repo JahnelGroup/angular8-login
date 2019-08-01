@@ -17,10 +17,10 @@ export class RegistrationComponentComponent implements OnInit {
   password: string;
   password2: string;
   email: string;
+  types = [{value: 'user', viewValue:'User'}, {value: 'admin', viewValue: 'Admin'}, {value: 'invalid', viewValue: 'Invalid'}];
   type: string = 'user';
   error = {};
   //Type is hard coded as user - otherwise registration doesn't work
-
 
   ngOnInit() {
   }

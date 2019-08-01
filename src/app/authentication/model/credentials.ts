@@ -2,6 +2,7 @@
 export interface UserDetails {
   email: string;
   username: string;
+  type: string;
 }
 
 export interface TokenDetails {

@@ -17,6 +17,7 @@ import { PostsComponentComponent } from './posts-component/posts-component.compo
 
 import {BasicAuthInterceptor} from './basic-auth/basic-auth.interceptor';
 import { PostItemComponentComponent } from './post-item-component/post-item-component.component';
+import { UserViewComponent } from './user-view/user-view.component';
 
 @NgModule({
   declarations: [
@@ -27,7 +28,8 @@ import { PostItemComponentComponent } from './post-item-component/post-item-comp
     HomeComponentComponent,
     NavbarComponentComponent,
     PostsComponentComponent,
-    PostItemComponentComponent
+    PostItemComponentComponent,
+    UserViewComponent
   ],
   imports: [
     BrowserModule,

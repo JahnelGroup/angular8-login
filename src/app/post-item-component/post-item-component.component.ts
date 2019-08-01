@@ -1,6 +1,8 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { Post } from '../posts/models/post'
 import { PostsService } from '../posts/posts.service';
+import { AuthenticationService } from '../authentication/authentication.service';
+import { UserDetails } from '../authentication/model/credentials';
 
 @Component({
   selector: 'app-post-item-component',
@@ -12,14 +14,18 @@ export class PostItemComponentComponent implements OnInit {
   @Output() deletedPost: EventEmitter<Post> = new EventEmitter();
 
   postDate: String;
+  user: UserDetails;
+  hasAccess: boolean;
   hidden: boolean = false;
 
   static monthNames = ["January", "February", "March", "April", "May", "June",
   "July", "August", "September", "October", "November", "December"];
 
-  constructor(private postsService: PostsService) { }
+  constructor(private postsService: PostsService, private AuthService: AuthenticationService) { }
 
   ngOnInit() {
+    this.user = this.AuthService.getUserSubject().getValue();
+    this.hasAccess = this.user.username == this.post.username || this.user.type == "admin";
     this.postDate = this.getDate(this.post.created);
   }
 
@@ -35,7 +41,7 @@ export class PostItemComponentComponent implements OnInit {
     const longTime = created.match(/T(.*)/)[1];
     const time = longTime.substring(0,5);
     const hour = (parseInt(time.substring(0,2)) - 4) % 24;
-    const timeAMPM = (hour < 1 ? hour : hour - 12) + time.substring(2) + ( (hour < 12 || hour == 24)? 'am' : 'pm');
+    const timeAMPM = (hour <= 12 ? hour : hour - 12) + time.substring(2) + ( (hour < 12 || hour == 24)? 'am' : 'pm');
 
     return "on " + date + " at " + timeAMPM;
   }

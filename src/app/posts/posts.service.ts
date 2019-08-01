@@ -24,8 +24,7 @@ export class PostsService {
   }
 
   post(postText:String){
-    this.http.post<Post>(this.ROOT_URL + 'users/me/posts', { message: postText }).toPromise().then(post => {
-    });
+    return this.http.post<Post>(this.ROOT_URL + 'users/me/posts', { message: postText }).toPromise();
   }
 
   async deletePostById(postId){

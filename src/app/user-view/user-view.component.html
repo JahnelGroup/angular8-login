@@ -1,0 +1,4 @@
+<p>User Profile</p>
+<div *ngIf="isOwnPage">This is your own profile</div>
+<div>User: {{userViewing?.username}}</div>
+<button *ngIf="isOwnPage || user.type == 'admin'">Delete</button>

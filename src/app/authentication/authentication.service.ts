@@ -72,12 +72,7 @@ export class AuthenticationService {
   }
 
   loggedInUser(token: TokenDetails | string): Promise<UserDetails> {
-    /*
-    const basicAuthStr = typeof token === 'string' ? 'Basic ' + btoa(token + ':') :
-      'Basic ' + btoa(token.token + ':');
-    const headers = new HttpHeaders({Authorization: basicAuthStr});
-    */
-    return this.http.get<UserDetails>(this.ROOT_URL + 'users/me'/*, { headers }*/).toPromise().then(userDetails => {
+    return this.http.get<UserDetails>(this.ROOT_URL + 'users/me').toPromise().then(userDetails => {
       this.userSubject.next(userDetails);
       return userDetails;
     }).catch(err => {
@@ -101,5 +96,9 @@ export class AuthenticationService {
     } else {
       return null;
     }
+  }
+
+  getOtherUser(username:string): Promise<UserDetails> {
+    return this.http.get<UserDetails>(this.ROOT_URL + 'users/' + username).toPromise();
   }
 }

@@ -32,6 +32,17 @@
       <div *ngIf="error.password2" class="errorMessage">
         {{ error.password2 }}
       </div>
+      <mat-form-field>
+        <mat-label>Select User Status</mat-label>
+        <mat-select matInput [(ngModel)]="type" name="type">
+          <mat-option *ngFor="let t of types" [value]="t.value">
+            {{ t.viewValue }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+      <div *ngIf="error.type" class="errorMessage">
+        {{ error.type }}
+      </div>
     </form>
   </mat-card-content>
   <mat-card-actions>
