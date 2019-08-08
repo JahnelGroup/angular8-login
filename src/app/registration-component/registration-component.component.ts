@@ -19,6 +19,7 @@ export class RegistrationComponentComponent implements OnInit {
   email: string;
   types = [{value: 'user', viewValue:'User'}, {value: 'admin', viewValue: 'Admin'}, {value: 'invalid', viewValue: 'Invalid'}];
   type: string = 'user';
+  imgURL;
   error = {};
   //Type is hard coded as user - otherwise registration doesn't work
 
@@ -30,6 +31,10 @@ export class RegistrationComponentComponent implements OnInit {
       this.error = err.error;
     });
     //Type is hard coded as user - otherwise registration doesn't work
+  }
+
+  imageSelected(selectedURL){
+    this.imgURL = selectedURL;
   }
 
 }

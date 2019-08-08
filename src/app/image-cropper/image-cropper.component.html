@@ -1,0 +1,14 @@
+<div class="modal" [ngStyle] = "{'display' : visible ? 'block' : 'none'}">
+    <div class = "modal-content">
+        <label>Select Image</label>
+        <img *ngIf="croppedURL" [src]="croppedURL">
+        <br>
+        <input #imageInput type="file" accept="image/*" (change)="onImageChange($event)">
+        <div class="img-container" *ngIf="imgURL">
+            <img class="img-container" #image [src]="imgURL">
+        </div>
+        <button (click)="replace()">Replace</button>
+        <button (click)="cropImage()">Crop</button>
+        <button (click)="hide()">Close</button>
+    </div>
+</div>

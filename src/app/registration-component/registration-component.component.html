@@ -3,6 +3,14 @@
 </mat-toolbar>
 <mat-card class="my-card">
   <mat-card-content>
+    <div>
+      <app-image-cropper #modal (croppedURLEmitter)="imageSelected($event)"></app-image-cropper>
+      <div>
+        <button (click)="modal.show()">Crop Image</button>
+        <br>
+        <img class="img-preview" *ngIf="imgURL" [src]="imgURL">
+      </div>
+    </div>
     <form class="my-form">
       <mat-form-field class="full-width">
         <mat-label>Email</mat-label>

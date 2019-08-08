@@ -18,6 +18,7 @@ import { PostsComponentComponent } from './posts-component/posts-component.compo
 import {BasicAuthInterceptor} from './basic-auth/basic-auth.interceptor';
 import { PostItemComponentComponent } from './post-item-component/post-item-component.component';
 import { UserViewComponent } from './user-view/user-view.component';
+import { ImageCropperComponent } from './image-cropper/image-cropper.component';
 
 @NgModule({
   declarations: [
@@ -29,7 +30,8 @@ import { UserViewComponent } from './user-view/user-view.component';
     NavbarComponentComponent,
     PostsComponentComponent,
     PostItemComponentComponent,
-    UserViewComponent
+    UserViewComponent,
+    ImageCropperComponent
   ],
   imports: [
     BrowserModule,
