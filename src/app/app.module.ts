@@ -2,6 +2,8 @@ import {HttpClientModule, HTTP_INTERCEPTORS} from '@angular/common/http';
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 
+import { Ng2ImgMaxModule } from 'ng2-img-max';
+
 import {HomeComponentComponent} from './home-component/home-component.component';
 import { RegistrationComponentComponent } from './registration-component/registration-component.component';
 import { LoginComponentComponent } from './login-component/login-component.component';
@@ -38,6 +40,7 @@ import { ImageCropperComponent } from './image-cropper/image-cropper.component';
     AppRoutingModule,
     BrowserAnimationsModule,
     MyMaterialModule,
+    Ng2ImgMaxModule,
     RouterModule.forRoot([
       { path: '', component: WelcomeComponentComponent, pathMatch: 'full' },
       { path: 'register', component: RegistrationComponentComponent },

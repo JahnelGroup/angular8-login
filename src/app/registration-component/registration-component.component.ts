@@ -35,6 +35,7 @@ export class RegistrationComponentComponent implements OnInit {
 
   imageSelected(selectedURL){
     this.imgURL = selectedURL;
+    console.log(this.imgURL);
   }
 
 }

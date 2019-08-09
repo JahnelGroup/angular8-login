@@ -5,7 +5,8 @@
         <br>
         <input #imageInput type="file" accept="image/*" (change)="onImageChange($event)">
         <div class="img-container" *ngIf="imgURL">
-            <img class="img-container" #image [src]="imgURL">
+            <!-- The bypassSecurityTrustUrl is necessary to get the image to show -->
+            <img class="img-container" #image [src]="sanitizer.bypassSecurityTrustUrl(imgURL)">
         </div>
         <button (click)="replace()">Replace</button>
         <button (click)="cropImage()">Crop</button>

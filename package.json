@@ -23,6 +23,7 @@
     "@angular/router": "~8.1.0",
     "cropperjs": "^1.5.5",
     "hammerjs": "^2.0.8",
+    "ng2-img-max": "^2.1.18",
     "rxjs": "~6.4.0",
     "tslib": "^1.9.0",
     "zone.js": "~0.9.1"

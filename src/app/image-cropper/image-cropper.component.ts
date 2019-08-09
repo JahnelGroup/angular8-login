@@ -1,4 +1,6 @@
 import { Component, OnInit, ViewChild, ElementRef, Output, EventEmitter } from '@angular/core';
+import { DomSanitizer } from '@angular/platform-browser';
+import { Ng2ImgMaxService } from 'ng2-img-max';
 import Cropper from "cropperjs";
 
 @Component({
@@ -11,13 +13,12 @@ export class ImageCropperComponent implements OnInit {
 
   imgURL: any;
   private cropper: Cropper;
-  cropperUpdateNeeded = false;
 
   @ViewChild("image", { static: false })
   public imageElement: ElementRef;
   public visible = false;
 
-  constructor() { }
+  constructor(private ng2ImgMax: Ng2ImgMaxService, private sanitizer: DomSanitizer) { }
 
   ngOnInit() {
   }
@@ -29,9 +30,6 @@ export class ImageCropperComponent implements OnInit {
         scalable: false,
         aspectRatio: 1
       });
-      this.cropperUpdateNeeded = false;
-    } else if(this.cropperUpdateNeeded){
-      this.cropperUpdateNeeded = false;
     }
   }
 
@@ -53,19 +51,36 @@ export class ImageCropperComponent implements OnInit {
   //this.imageDestination = canvas.toDataUrl("image/png");
 
   onImageChange(event: any){
-    let files = event.target.files;
-    let reader = new FileReader();
-    reader.readAsDataURL(files[0]);
-    reader.onload = (_event) => {
-      this.imgURL = reader.result;
+    let image = event.target.files[0];
 
-      //Update happens in here because onload is an async function
-      if(this.cropper){
-        this.cropper.replace(this.imgURL);
-        this.cropper.reset();
+    console.log("Outside");
+    console.log(image);
+
+    /*This throws an error for some files because of a line of deprecated code:
+       for (n = start; n < start+length; n++) {
+            outstr += String.fromCharCode(buffer.getUint8(n));
+        }
+    */
+    this.ng2ImgMax.compressImage(image, 0.075).subscribe( result => {
+      console.log("Before");
+      let compressedImage = new File([result], result.name);
+      let reader = new FileReader();
+
+      console.log("Here");
+
+      reader.readAsDataURL(compressedImage);
+      reader.onload = (_event) => {
+        this.imgURL = reader.result;
+
+        console.log("Inside");
+  
+        //Update happens in here because onload is an async function
+        if(this.cropper){
+          this.cropper.replace(this.imgURL);
+          this.cropper.reset();
+        }
       }
-    }
-    this.cropperUpdateNeeded = true;
+    });
   }
 
   cropImage(){
